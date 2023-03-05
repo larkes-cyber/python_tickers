@@ -24,8 +24,7 @@ def upload_data_ticker_from_db(ticker):
 def moving_average(ticker):
 
     df = upload_data_ticker_from_db(ticker)
-
-    df = df[['Date', 'Close']]
+    df = df[['Date', 'Close']][::-1]
     df.set_index('Date', inplace=True)
     ma_day = [10, 20, 30]
 
@@ -33,7 +32,7 @@ def moving_average(ticker):
         column_name = "MA for %s days" % (str(ma))
         df[column_name] = df['Close'].rolling(window=ma, center=False).mean()
 
-    return df[['Close', 'MA for 10 days', 'MA for 20 days', 'MA for 30 days']]
+    return df[['Close', 'MA for 10 days', 'MA for 20 days', 'MA for 30 days']][::-1]
 
 
 def moving_average_display(ticker):
@@ -47,7 +46,6 @@ def moving_average_display(ticker):
     ticker_cma.set_index('Date', inplace=True)
     ticker_cma = ticker_cma.reindex(index=ticker_cma.index[::-1])
     return ticker_cma
-
 
 def rsi(ticker, periods=14):
     df = upload_data_ticker_from_db(ticker)
@@ -94,11 +92,13 @@ def component(ticker, index, props):
         st.text("Общая информация")
         st.write(props)
         st.text("Полосы Боллинджера")
-        st.line_chart(moving_average(ticker))
+        st.line_chart(moving_average_display(ticker))
         st.text("Индекс относительной силы(RSI)")
         st.line_chart(rsi(ticker))
         st.text("Изменение объема торгов:")
         st.line_chart(volume(ticker))
+        st.text("Скользящая средняя:")
+        st.line_chart(moving_average(ticker))
 
     st.markdown(
         """
