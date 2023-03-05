@@ -99,6 +99,8 @@ def component(ticker, index, props):
         st.line_chart(volume(ticker))
         st.text("Скользящая средняя:")
         st.line_chart(moving_average(ticker))
+        if(ticker == "MMM"): st.subheader("Исходя из данных полученных графиков можно сказать, что не стоит покупать в долгосточной период, а в краткосрочный стоит.")
+        if(ticker == "META"): st.subheader("!!Заперещена в России")
 
     st.markdown(
         """
