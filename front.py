@@ -25,13 +25,15 @@ def moving_average(ticker):
 
     df = upload_data_ticker_from_db(ticker)
 
+    df = df[['Date', 'Close']]
+    df.set_index('Date', inplace=True)
     ma_day = [10, 20, 30]
 
     for ma in ma_day:
         column_name = "MA for %s days" % (str(ma))
         df[column_name] = df['Close'].rolling(window=ma, center=False).mean()
 
-    return df[['Date', 'Close', 'MA for 10 days', 'MA for 20 days', 'MA for 30 days']]
+    return df[['Close', 'MA for 10 days', 'MA for 20 days', 'MA for 30 days']]
 
 
 def moving_average_display(ticker):
